@@ -758,7 +758,7 @@ prompt_command_execution_time() {
   fi
 
   if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    "$1_prompt_segment" "$0" "$2" "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+    "$1_prompt_segment" "$0" "$2" "yellow1" "black" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
 }
 
@@ -1690,7 +1690,18 @@ prompt_dir_writable() {
 
 ################################################################
 # Kubernetes Current Context/Namespace
+k8son() {
+  K8SON=1
+}
+
+k8soff() {
+  K8SON=
+}
 prompt_kubecontext() {
+  if [[ -z "${K8SON}" ]]; then
+    return
+  fi
+
   local kubectl_version="$(kubectl version --client 2>/dev/null)"
 
   if [[ -n "$kubectl_version" ]]; then
